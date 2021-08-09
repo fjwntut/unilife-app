@@ -8,6 +8,8 @@ export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const usersRef = firebase.firestore().collection('users')
+
     const onFooterLinkPress = () => {
         navigation.navigate('Registration')
     }
@@ -18,16 +20,15 @@ export default function LoginScreen({navigation}) {
             .signInWithEmailAndPassword(email, password)
             .then((response) => {
                 const uid = response.user.uid
-                const usersRef = firebase.firestore().collection('users')
                 usersRef
                     .doc(uid)
                     .get()
-                    .then(firestoreDocument => {
-                        if (!firestoreDocument.exists) {
+                    .then(doc => {
+                        if (!doc.exists) {
                             alert("User does not exist anymore.")
                             return;
                         }
-                        const user = firestoreDocument.data()
+                        const user = doc.data()
                         navigation.navigate('Home', {user: user})
                     })
                     .catch(error => {

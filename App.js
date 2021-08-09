@@ -3,18 +3,19 @@ import React, { useEffect, useState } from 'react'
 import { firebase } from './src/firebase/config'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { LoginScreen, HomeScreen, ArticleScreen, RegistrationScreen } from './src/screens'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs' 
+import { LoginScreen, HomeScreen, ArticleScreen, RegistrationScreen, MessageScreen, ChatRoomScreen } from './src/screens'
 import {decode, encode} from 'base-64'
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
 
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
-  const [article, setArticle] = useState({})
   
   useEffect(() => {
     const usersRef = firebase.firestore().collection('users');
@@ -23,10 +24,9 @@ export default function App() {
         usersRef
           .doc(user.uid)
           .get()
-          .then((document) => {
-            const userData = document.data()
+          .then((doc) => {
             setLoading(false)
-            setUser(userData)
+            setUser(doc)
           })
           .catch((error) => {
             setLoading(false)
@@ -43,24 +43,52 @@ export default function App() {
     )
   }
 
+  function HomeStackScreen(props) {
+    const Stack = createStackNavigator();
+    return (
+      <Stack.Navigator>		  
+			<Stack.Screen name="Home">
+				{props => <HomeScreen {...props} user={user} />}
+			</Stack.Screen>
+			<Stack.Screen name="Article">
+				{props => <ArticleScreen {...props} user={user} />}
+			</Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  function ChatStackScreen(props) {
+    const Stack = createStackNavigator();
+    return (
+      <Stack.Navigator>		  
+			{/* <Stack.Screen name="Chatroom">
+				{props => <ChatRoomScreen {...props} user={user} />}
+			</Stack.Screen> */}
+			<Stack.Screen name="Message">
+				{props => <MessageScreen {...props} user={user} />}
+			</Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
         { user ? (
-          <>
-            <Stack.Screen name="Home">
-              {props => <HomeScreen {...props} extraData={user} />}
-            </Stack.Screen>
-            <Stack.Screen name="Article" component={ArticleScreen} />
-          </>
+          <Tab.Navigator>
+            <Tab.Screen name="HomeStack" options={{tabBarLabel:"主頁"}}>
+              {props => <HomeStackScreen {...props} user={user} />}
+            </Tab.Screen>
+            <Tab.Screen name="ChatStack" options={{tabBarLabel:"聊天室"}}>
+              {props => <ChatStackScreen {...props} user={user} />}
+            </Tab.Screen>
+          </Tab.Navigator>
         ) :  
         (
-          <>
+          <Stack.Navigator>
             <Stack.Screen name="Registration" component={RegistrationScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
-          </>
-        )}
-      </Stack.Navigator>
+          </Stack.Navigator>
+        )} 
     </NavigationContainer>
   );
 }

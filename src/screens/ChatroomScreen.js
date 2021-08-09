@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, View } from 'react-native'
-import styles from './styles';
-import { firebase } from '../../firebase/config'
+import { FlatList, Keyboard, Text, Image, TextInput, TouchableOpacity, View } from 'react-native'
+import styles from './HomeScreen/styles';
+import { firebase } from '../firebase/config'
 
-export default function HomeScreen(props) {
+export default function ChatRoomScreen(props) {
     console.log(props)
     
     const user = props.user.data()
@@ -15,10 +15,8 @@ export default function HomeScreen(props) {
     console.log("Ref", firebase.firestore().doc('articles/9qAFUBpb7n0U1bzylreO'))
 
     useEffect(() => {
-        console.log("community", user.community)
-        console.log("identity", user.identity.community)
         articlesRef
-            .where("community", "in", ["all", user.identity.community])
+            .where("community", "in", ["all", user.community])
             .orderBy('publishedAt', 'desc')
             .onSnapshot(
                 querySnapshot => {

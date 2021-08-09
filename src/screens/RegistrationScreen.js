@@ -11,6 +11,8 @@ export default function RegistrationScreen({navigation}) {
     const [name, setName] = useState('')
     const [nickname, setNickname] = useState('')
     const [birthday, setBirthday] = useState('')
+
+    const usersRef = firebase.firestore().collection('users')
     // const [checkbox, setCheckbox] = useState('')
 
     const onFooterLinkPress = () => {
@@ -22,7 +24,7 @@ export default function RegistrationScreen({navigation}) {
             alert("確認密碼不相符！")
             return
         }
-        var checkbox = true
+        let checkbox = true
         if (!checkbox) {
             alert("確認密碼不相符！")
             return
@@ -35,17 +37,27 @@ export default function RegistrationScreen({navigation}) {
                 const uid = response.user.uid
                 const data = {
                     id: uid,
-                    email,
-                    name,
-                    nickname,
-                    birthday
-                };
-                const usersRef = firebase.firestore().collection('users')
+                    info: {
+                        email,
+                        name,
+                        nickname,
+                        birthday
+                    },
+                    identity: {
+                        community: firebase.firestore().doc('/communities/nthu/'),
+                        grade: 1,
+                        department: firebase.firestore().doc('/communities/nthu/departments/computerScience'),
+                    },
+                    verification: {
+                        type: "file",
+                        status: true
+                    }
+                }
                 usersRef
                     .doc(uid)
                     .set(data)
                     .then(() => {
-                        navigation.navigate('Home', {user: data})
+                        navigation.navigate('HomeStack', {user: data})
                     })
                     .catch((error) => {
                         alert(error)
