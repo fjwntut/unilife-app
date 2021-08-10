@@ -26,7 +26,7 @@ export default function HomeScreen(props) {
                     setEntities(newEntities)
                 },
                 error => {
-                    console.log(error)
+                    // console.log(error)
                 }
             )
     }, [])

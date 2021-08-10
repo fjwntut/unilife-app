@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, SafeAreaView, ScrollView, View, TextInput, TouchableOpacity } from 'react-native'
-import styles from './ArticleScreen/styles';
+import styles from '../styles/styles';
 import { firebase } from '../firebase/config'
 import RenderHtml from 'react-native-render-html';
 // import HTMLView from 'react-native-htmlview';
@@ -14,18 +14,18 @@ export default function ArticleScreen(props) {
 
     const [content, setContent] = useState(article.content)
     const [comments, setComments] = useState([])
-    const [commentText, setCommentText] = useState([])
+    const [inputText, setInputText] = useState([])
 
     /* Get Images */
     let newContent = content;
     storageRef.child('articles/' + article.id + '/images/').listAll()
         .then(async res => {
             for (const imageRef of res.items) {
-                console.log('<img src="'+imageRef.name+'"')
+                // console.log('<img src="'+imageRef.name+'"')
                 const url = await imageRef.getDownloadURL()
-                console.log('<img src="'+url+'"')
+                // console.log('<img src="'+url+'"')
                 newContent = newContent.replace('<img src="'+imageRef.name+'"', '<img src="'+url+'" style="width: 100%"')
-                console.log(newContent)
+                // console.log(newContent)
             }
             setContent(newContent)
         })
@@ -41,9 +41,9 @@ export default function ArticleScreen(props) {
                     querySnapshot.forEach(async doc => {
                         const comment = doc.data()
                         comment.id = doc.id
-                        console.log(comment)
+                        // console.log(comment)
                         const snapshot = await comment.user.get()
-                        comment.user = snapshot.data().name
+                        comment.user = snapshot.data().info.nickname
                         comment.replies = commentsRef.doc(doc.id).collection('replies')
                         if (comment.timestamp == null) {
                             comment.timestamp = firebase.firestore.Timestamp.now();
@@ -53,7 +53,7 @@ export default function ArticleScreen(props) {
                     });
                 },
                 error => {
-                    console.log(error)
+                    // console.log(error)
                 }
             )
             // setComments([
@@ -66,19 +66,19 @@ export default function ArticleScreen(props) {
     const commentItem = ({item}) => {
         return (
             <View style={styles.commentItem}>
-                <Text style={styles.commentText}>{item.user}</Text>
-                <Text style={styles.commentText}>{item.timestamp.toDate().toString()}</Text>
-                <Text style={styles.commentText}>{item.content}</Text>
+                <Text style={styles.inputText}>{item.user}</Text>
+                <Text style={styles.inputText}>{item.timestamp.toDate().toString()}</Text>
+                <Text style={styles.inputText}>{item.content}</Text>
             </View>
         )
     }
     
-    const onAddButtonPress = () => {
-        if (commentText && commentText.length > 0) {
+    const addComment = () => {
+        if (inputText && inputText.length > 0) {
             const timestamp = firebase.firestore.FieldValue.serverTimestamp();
             const data = {
                 user: firebase.firestore().doc('users/' + user.id),
-                comment: commentText,
+                comment: inputText,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             };
             commentsRef.add(data)
@@ -125,12 +125,12 @@ export default function ArticleScreen(props) {
                         style={styles.input}
                         placeholder='留言...'
                         placeholderTextColor="#aaaaaa"
-                        onChangeText={(text) => setCommentText(text)}
-                        value={commentText}
+                        onChangeText={(text) => setInputText(text)}
+                        value={inputText}
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />
-                    <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+                    <TouchableOpacity style={styles.button} onPress={addComment}>
                         <Text style={styles.buttonText}>送出</Text>
                     </TouchableOpacity>
                 </View>

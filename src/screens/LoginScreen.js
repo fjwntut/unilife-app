@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import styles from './styles';
-import { firebase } from '../../firebase/config'
+import styles from './LoginScreen/styles';
+import { firebase } from '../firebase/config'
 
 export default function LoginScreen({navigation}) {
+    const usersRef = firebase.firestore().collection('users')
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
-    const usersRef = firebase.firestore().collection('users')
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration')
@@ -45,10 +45,6 @@ export default function LoginScreen({navigation}) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />
                 <TextInput
                     style={styles.input}
                     placeholder='E-mail'

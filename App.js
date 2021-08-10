@@ -4,7 +4,7 @@ import { firebase } from './src/firebase/config'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs' 
-import { LoginScreen, HomeScreen, ArticleScreen, RegistrationScreen, MessageScreen, ChatRoomScreen } from './src/screens'
+import { LoginScreen, HomeScreen, ArticleScreen, RegistrationScreen, ChatroomScreen, MessageScreen } from './src/screens'
 import {decode, encode} from 'base-64'
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-
+  
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
   
@@ -61,9 +61,9 @@ export default function App() {
     const Stack = createStackNavigator();
     return (
       <Stack.Navigator>		  
-			{/* <Stack.Screen name="Chatroom">
-				{props => <ChatRoomScreen {...props} user={user} />}
-			</Stack.Screen> */}
+			<Stack.Screen name="Chatroom">
+				{props => <ChatroomScreen {...props} user={user} />}
+			</Stack.Screen>
 			<Stack.Screen name="Message">
 				{props => <MessageScreen {...props} user={user} />}
 			</Stack.Screen>

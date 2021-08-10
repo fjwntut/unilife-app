@@ -5,6 +5,8 @@ import styles from '../styles/styles';
 import { firebase } from '../firebase/config'
 
 export default function RegistrationScreen({navigation}) {
+    const usersRef = firebase.firestore().collection('users')
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -12,7 +14,6 @@ export default function RegistrationScreen({navigation}) {
     const [nickname, setNickname] = useState('')
     const [birthday, setBirthday] = useState('')
 
-    const usersRef = firebase.firestore().collection('users')
     // const [checkbox, setCheckbox] = useState('')
 
     const onFooterLinkPress = () => {
@@ -73,10 +74,6 @@ export default function RegistrationScreen({navigation}) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Image
-                    style={styles.logo}
-                    source={require('../../assets/icon.png')}
-                />
                 <TextInput
                     style={styles.input}
                     placeholder='姓名'
