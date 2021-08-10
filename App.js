@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs' 
 import { LoginScreen, HomeScreen, ArticleScreen, RegistrationScreen, MessageScreen, ChatRoomScreen } from './src/screens'
 import {decode, encode} from 'base-64'
+import ProfileScreen from './src/screens/ProfileScreen/ProfileScreen';
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
@@ -85,8 +86,9 @@ export default function App() {
         ) :  
         (
           <Stack.Navigator>
+            <Stack.Screen name="Login" component={LoginScreen}/>
             <Stack.Screen name="Registration" component={RegistrationScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen}/>
           </Stack.Navigator>
         )} 
     </NavigationContainer>

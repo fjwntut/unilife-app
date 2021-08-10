@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, Text, TextInput, TouchableOpacity, View , Button} from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from '../styles/styles';
 import { firebase } from '../firebase/config'
@@ -11,6 +11,13 @@ export default function RegistrationScreen({navigation}) {
     const [name, setName] = useState('')
     const [nickname, setNickname] = useState('')
     const [birthday, setBirthday] = useState('')
+    const [agree, setAgree] = useState(false)
+
+    // const myStyle = StyleSheet.create({
+    //     input: {
+            
+    //     }
+    // })
 
     const usersRef = firebase.firestore().collection('users')
     // const [checkbox, setCheckbox] = useState('')
@@ -67,16 +74,26 @@ export default function RegistrationScreen({navigation}) {
                 alert(error)
         });
     }
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerStyle: {
+                backgroundColor: 'white',
+                borderBottomWidth: 0,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: { 
+                fontWeight: 'bold',
+                alignSelf: 'center' ,
+                color:'#4A4D57'
+            },
+        });
+      }, [navigation]);
 
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%' }}
+                style={{ flex: 1, width: '100%', height:'100%'}}
                 keyboardShouldPersistTaps="always">
-                <Image
-                    style={styles.logo}
-                    source={require('../../assets/icon.png')}
-                />
                 <TextInput
                     style={styles.input}
                     placeholder='姓名'
@@ -133,14 +150,24 @@ export default function RegistrationScreen({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                 <View style={{height: 100}} />
+                <View style={styles.footerView}>
+                    <Text style={styles.footerText}>
+                    <Button
+                        onPress={()=>setAgree(true)}
+                        color={agree?'#00aebb':'#e2e3e4'}>
+                                v
+                        </Button>
+                        
+                        我同意 
+                        <Text onPress={onFooterLinkPress} style={styles.footerLink}>UniLife個資授權書與使用者條款</Text>
+                    </Text>
+                </View>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onRegisterPress()}>
                     <Text style={styles.buttonTitle}>註冊</Text>
                 </TouchableOpacity>
-                <View style={styles.footerView}>
-                    <Text style={styles.footerText}>已經有帳戶嗎？ <Text onPress={onFooterLinkPress} style={styles.footerLink}>登入</Text></Text>
-                </View>
             </KeyboardAwareScrollView>
         </View>
     )
