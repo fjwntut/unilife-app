@@ -84,11 +84,11 @@ export default function App() {
 	function Tabs(props) {
 		return (
 			<Tab.Navigator>
-				<Tab.Screen name="ChatStack" options={{tabBarLabel:"聊天室"}}>
-					{props => <ChatStackScreen {...props} user={user} />}
-				</Tab.Screen>
 				<Tab.Screen name="HomeStack" options={{tabBarLabel:"主頁"}}>
 					{props => <HomeStackScreen {...props} user={user} />}
+				</Tab.Screen>
+				<Tab.Screen name="ChatStack" options={{tabBarLabel:"聊天室"}}>
+					{props => <ChatStackScreen {...props} user={user} />}
 				</Tab.Screen>
 				<Tab.Screen name="ProfileStack" options={{tabBarLabel:"個人資料"}}>
 					{props => <ProfileStackScreen {...props} user={user} />}

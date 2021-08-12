@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Text, Image, TextInput, TouchableOpacity, View, StyleSheet, useWindowDimensions } from 'react-native'
+import { FlatList, Keyboard, Text, Image, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
 import { stylesheet, Color } from '../styles'
 import { firebase } from '../firebase/config'
 // import Carousel from 'react-native-ui-lib/carousel';
@@ -98,20 +98,17 @@ export default function ChatroomScreen(props) {
         
     }, [])
     
-    class chatroomItem extends React.Component {
-        render() {
-        let items = this.props.items
-        // const cardWidth = useWindowDimensions().width * 0.7
-        // const cardHeight = useWindowDimensions().width * 0.6
+    const chatroomItem = ({item}) => {
         const cardStyle = StyleSheet.create({
             fullHeight: {
                 flex: 1,
+                justifyContent: 'center',
                 alignItems: 'center',
             },
             card: {
-                width: 400,
-                height: 300,
-                alignSelf: 'center',
+                width: '70%',
+                height: 400,
+                justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: Color.green,
             }
@@ -128,7 +125,6 @@ export default function ChatroomScreen(props) {
             </TouchableOpacity>
         )
     }
-}
 
     return (
         <View style={stylesheet.container}>

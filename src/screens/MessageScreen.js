@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Keyboard, Text, SafeAreaView, ScrollView, View, TextInput, TouchableOpacity } from 'react-native'
-import { stylesheet } from '../styles/styles'
+import { stylesheet } from '../styles'
 import { firebase } from '../firebase/config'
 import RenderHtml from 'react-native-render-html'
 import { Message } from '../components/messages'
