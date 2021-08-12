@@ -1,6 +1,6 @@
-import firebase from 'firebase';
-import '@firebase/auth';
-import '@firebase/firestore';
+import firebase from 'firebase'
+import '@firebase/auth'
+import '@firebase/firestore'
 
 const firebaseConfig = {
   // apiKey: 'AIzaSyAOWHBpPhKoNhcGFKHH_Q_0AtL2gV-imgQ',
@@ -16,10 +16,10 @@ const firebaseConfig = {
   projectId: 'gleaming-bot-319115',
   storageBucket: 'gleaming-bot-319115.appspot.com',
   appId: '1:898870383375:android:a26f4b4a55268eee68a47a',
-};
-
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
 }
 
-export { firebase };
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig)
+}
+
+export { firebase }

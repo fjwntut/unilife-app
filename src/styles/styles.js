@@ -1,24 +1,74 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
+import { color } from './color'
 
-export default StyleSheet.create({
-    checkboxTrue:{
-        height: 24,
-        width:24,
-        color:'#00aebb'
+export const styles = {
+    ...color,
+    text: {
+        ...color.textDark,
+        fontSize: 16,
+        textAlign: 'justify'
     },
-    checkboxFalse:{
-        height: 24,
-        width:24,
-        color:'#e2e3e4'
+    textSmall: {
+        fontSize: 12,
+    },      
+    textXSmall: {
+        fontSize: 10,
+    },      
+    textBubble: {
+        borderRadius: 20,
+        paddingVertical: 8,
+        paddingHorizontal: 16
+    },
+    articleTitle: {
+        fontSize: 20,
+        fontWeight: 900,
+        marginVertical: 8,
+    },
+    button: {
+        marginVertical: 8,
+        height: 40,
+        borderRadius: 20,
+        alignItems: "center",
+        justifyContent: 'center'
     },
     container: {
         flex: 1,
         alignItems: 'center',
         backgroundColor: 'white',
+    },
+    articleContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        padding: 20,
+    },
+    articleListItem: {
+        flex: 1,
+        flexDirection: 'row',
+        height: 90,
+        marginVertical: 8,
+        overflow: 'hidden',
         paddingHorizontal: 16,
+    },
+    listItemImage: {
+        width: 90,
+        height: 90,
+        borderRadius: 6,
+    },
+    listItemText: {
+        flex: 'column',
+        flexShrink: 1,
+    },
+    listItemTitle: {
+        flexWrap: 'wrap',
+    },
+    listItemDescription: {
+        height: 40,
+        flexWrap: 'wrap',
+        overflow: 'hidden',
     },
     formContainer: {
         flexDirection: 'row',
+        position: 'absolute',
         height: 80,
         marginTop: 40,
         marginBottom: 20,
@@ -67,6 +117,7 @@ export default StyleSheet.create({
     },
     footerView: {
         flex: 1,
+        justifyContent:'bottom',
         alignItems: "center",
         marginBottom: 20,
         marginTop: "auto"
@@ -82,4 +133,6 @@ export default StyleSheet.create({
         borderBottomColor: "#0F355C",
         borderBottomWidth: 1,
     }
-})
+}
+
+export const stylesheet = StyleSheet.create(styles)

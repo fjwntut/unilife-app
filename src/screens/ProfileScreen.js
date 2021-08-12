@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { ImageBackground, Image, Text, TextInput, TouchableOpacity, View, Button } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import styles from './styles';
-import { firebase } from '../../firebase/config';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { button } from '../components/forms'
+import styles from './ProfileScreen/styles'
+import { firebase } from '../firebase/config'
 
 export default function ProfileScreen({navigation}) {
 
@@ -19,64 +20,64 @@ export default function ProfileScreen({navigation}) {
             headerTitleStyle: { alignSelf: 'center' },
             headerRight: () => (
                 <TouchableOpacity
-                style={styles.headerButton}
+                style={stylesheet.headerButton}
                 onPress={() => true}>
-                <Text style={styles.buttonTitle}>完成</Text>
+                <Text style={stylesheet.buttonTitle}>完成</Text>
             </TouchableOpacity>
             ),
-        });
-      }, [navigation]);
+        })
+      }, [navigation])
 
     return (
             
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' ,backgroundColor: 'white'}}
                 keyboardShouldPersistTaps="always">
-                <View style={styles.green}>
+                <View style={stylesheet.green}>
                     <Image
-                        style={styles.propic}
-                        source={require('../../../assets/default-propic.png')}/>
+                        style={stylesheet.propic}
+                        source={Assets('default-propic.png')}/>
                 </View>
                 <View>
-                    <ImageBackground source={require('../../../assets/bg-profile.jpg')} resizeMode="cover" style={styles.bg}>
+                    <ImageBackground source={Assets('bg-profile.jpg')} resizeMode="cover" style={stylesheet.bg}>
                         <TouchableOpacity
-                            style={styles.editButton}
+                            style={stylesheet.editButton}
                             onPress={() => onLoginPress()}>
-                            <Text style={styles.buttonTitle}>編輯頭像</Text>
+                            <Button style={stylesheet.editButton}>編輯頭像</Button>
                         </TouchableOpacity>
                     </ImageBackground>
                 </View>
-                <View style={styles.container}>
+                <View style={stylesheet.container}>
                     <TextInput
-                        style={styles.input}
+                        style={stylesheet.input}
                         placeholder='姓名'
                         placeholderTextColor="#aaaaaa"
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />
                     <TextInput
-                        style={styles.input}
+                        style={stylesheet.input}
                         placeholder='暱稱'
                         placeholderTextColor="#aaaaaa"
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />
                     <TextInput
-                        style={styles.input}
+                        style={stylesheet.input}
                         placeholder='生日'
                         placeholderTextColor="#aaaaaa"
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />
                     <TextInput
-                        style={styles.input}
+                        style={stylesheet.input}
                         placeholder='Email'
                         placeholderTextColor="#aaaaaa"
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />
                     <TextInput
-                        style={styles.input}
+                        style={stylesheet.input}
                         placeholderTextColor="#aaaaaa"
                         secureTextEntry
                         placeholder='密碼'
@@ -84,7 +85,7 @@ export default function ProfileScreen({navigation}) {
                         autoCapitalize="none"
                     />
                     <TextInput
-                        style={styles.input}
+                        style={stylesheet.input}
                         placeholderTextColor="#aaaaaa"
                         secureTextEntry
                         placeholder='再次輸入密碼'

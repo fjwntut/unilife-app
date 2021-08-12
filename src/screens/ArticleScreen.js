@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, SafeAreaView, ScrollView, View, TextInput, TouchableOpacity } from 'react-native'
-import styles from '../styles/styles';
+import { FlatList, Keyboard, Text, SafeAreaView, ScrollView, View, TextInput, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { stylesheet } from '../styles/styles'
 import { firebase } from '../firebase/config'
-import RenderHtml from 'react-native-render-html';
+import RenderHtml from 'react-native-render-html'
 // import HTMLView from 'react-native-htmlview';
+import moment from 'moment'
 
 export default function ArticleScreen(props) {
 
@@ -18,7 +19,8 @@ export default function ArticleScreen(props) {
 
     /* Get Images */
     let newContent = content;
-    storageRef.child('articles/' + article.id + '/images/').listAll()
+    // storageRef.child('articles/' + article.id + '/images/').listAll()
+    storageRef.child('articles/9qAFUBpb7n0U1bzylreO/images/').listAll()
         .then(async res => {
             for (const imageRef of res.items) {
                 // console.log('<img src="'+imageRef.name+'"')
@@ -65,10 +67,10 @@ export default function ArticleScreen(props) {
 
     const commentItem = ({item}) => {
         return (
-            <View style={styles.commentItem}>
-                <Text style={styles.inputText}>{item.user}</Text>
-                <Text style={styles.inputText}>{item.timestamp.toDate().toString()}</Text>
-                <Text style={styles.inputText}>{item.content}</Text>
+            <View style={stylesheet.commentItem}>
+                <Text style={stylesheet.inputText}>{item.user}</Text>
+                <Text style={stylesheet.inputText}>{item.timestamp.toDate().toString()}</Text>
+                <Text style={stylesheet.inputText}>{item.content}</Text>
             </View>
         )
     }
@@ -94,35 +96,62 @@ export default function ArticleScreen(props) {
     const tagsStyles = {
         b: {
             fontWeight: 'bold'
-        }
+        },
+        h2: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            marginTop: 18,
+            marginBottom: 4,
+        },
+        p: {
+            fontSize: 15,
+            lineHeight: 24,
+            marginBottom: 8,
+        },
+        ul: {
+            marginBottom: 8
+        },
+        li: {
+            fontSize: 15,
+            lineHeight: 24,
+            marginLeft: 8
+        },
+        img: {
+            enableExperimentalPercentWidth: true,
+            width: '100%',
+            justifyContent: 'center',
+            alignText: 'center',
+            marginVertical: 8
+          }
     }
     
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-
-                <Text style={styles.articleText}>
+        <SafeAreaView style={stylesheet.container}>
+            <ScrollView style={stylesheet.scrollView}>
+                <View style={stylesheet.articleContainer}>
+                <Text style={stylesheet.articleTitle}>
                     {article.title}
                 </Text>
-                <Text style={styles.articleText}>
-                    {article.source}
+                <Text style={stylesheet.textSmall}>
+                    {article.meta.source + ' '}
+                    {moment(article.publishedAt.toDate()).format('YYYY/M/D h:mm a')}
                 </Text>
-                <Text style={styles.articleText}>
-                    {article.publishedAt.toDate().toString()}
-                </Text> 
                 <RenderHtml
                     source={{html: content}}
                     tagsStyles={tagsStyles}
+                    contentWidth={useWindowDimensions().width - 40}
                 />
-                <FlatList
+                </View>
+
+                {/* <FlatList
                     data={comments}
                     renderItem={commentItem}
                     keyExtractor={(item, index) => index.toString()}
                     // removeClippedSubviews={true}
                 />
-                <View style={styles.formContainer}>
+                <View style={stylesheet.formContainer}>
                     <TextInput
-                        style={styles.input}
+                        style={stylesheet.input}
                         placeholder='留言...'
                         placeholderTextColor="#aaaaaa"
                         onChangeText={(text) => setInputText(text)}
@@ -130,10 +159,10 @@ export default function ArticleScreen(props) {
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />
-                    <TouchableOpacity style={styles.button} onPress={addComment}>
-                        <Text style={styles.buttonText}>送出</Text>
+                    <TouchableOpacity style={stylesheet.button} onPress={addComment}>
+                        <Text style={stylesheet.buttonText}>送出</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </ScrollView>
         </SafeAreaView>
     )

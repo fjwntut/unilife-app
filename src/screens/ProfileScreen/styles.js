@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
     headerButton:{
@@ -29,6 +29,10 @@ export default StyleSheet.create({
         marginTop:16,
     },
     editButton:{
+        
+        color: 'white',
+        fontSize: 16,
+        fontWeight: "bold",
         height: 40,
         borderRadius: 20,
         paddingHorizontal:32,
@@ -49,19 +53,6 @@ export default StyleSheet.create({
         marginBottom: 8,
         width: '100%',
         paddingLeft: 16
-    },
-    button: {
-        backgroundColor: '#00aebb',
-        marginTop: 8,
-        height: 40,
-        borderRadius: 20,
-        alignItems: "center",
-        justifyContent: 'center'
-    },
-    buttonTitle: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: "bold"
     },
     footerView: {
         flex: 1,
