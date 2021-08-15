@@ -110,7 +110,39 @@ export default function HomeScreen(props) {
         <View style={stylesheet.container}>
             <StickedBg image={require('../../assets/home.jpg')}>
             </StickedBg>
-            
+            <View style={homeCardStyle.container}>
+                <View style={stylesheet.row}>
+                    <View style={{flex:1}}>
+                        <Text style={homeCardStyle.greeting}>小攸，午安！</Text>
+                        <Text style={homeCardStyle.time}>6月24日星期六 下午3點30分</Text>
+                    </View>
+                    {/* <TouchableOpacity>
+                        <Image source={require('../../assets/icons/bookmark.png')} style={homeCardStyle.icon} tintColor='#fff'/>
+                    </TouchableOpacity> */}
+                    <TouchableOpacity>
+                        <Image style={homeCardStyle.icon}  source={require('../../assets/icons/bookmark.png')} tintColor='#fff'/>
+                    </TouchableOpacity>
+                </View>
+                <View style={stylesheet.row}>
+                    {myShortcuts.map((item, index)=><HomeShortcutItem item={item} key={index}/>)}
+                </View>
+            </View>
+            {/* <FlatList
+                data = {myShortcuts}
+                renderItem = {(itemProps) => <HomeShortcutItem {...itemProps}/>}
+                keyExtractor={(item, index) => 'sc'+index}
+                numColumns={4}
+            /> */}
+            <ExpandCard>
+                { articles && (
+                    <FlatList
+                        data={articles}
+                        renderItem={articleListItem}
+                        keyExtractor={(item) => item.id}
+                        removeClippedSubExpandCards={true}
+                    />
+                )}
+            </ExpandCard>
         </View>
     )
 }
