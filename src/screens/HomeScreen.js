@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Text, TouchableOpacity, TouchableHighlight, View } from 'react-native'
+import { FlatList, Text, TouchableOpacity, TouchableHighlight, View, StyleSheet,Image } from 'react-native'
 import { stylesheet } from '../styles'
 import { ListItem } from '../components/lists'
 import { firebase } from '../firebase/config'
+import { StickedBg, ExpandCard } from '../components/decorative'
+import { HomeShortcutItem } from '../components/shortcutItem'
 
 export default function HomeScreen(props) {
     // console.log(props)
@@ -65,20 +67,50 @@ export default function HomeScreen(props) {
     const articleListItem = (itemProps) => 
         <ListItem {...itemProps} onPress={() => props.navigation.navigate('Article', {article: itemProps.item}) } 
         />
-
+    
+    const homeCardStyle = StyleSheet.create({
+        container:{
+            width: '100%',
+            paddingTop: 56,
+            zIndex:3,
+        },
+        greeting: {
+            paddingHorizontal:16,
+            marginBottom:16,
+            fontSize: 32,
+            color:'white',
+        },
+        time:{
+            marginBottom:40,
+            paddingHorizontal:16,
+            fontSize: 18,
+            color:'white',
+        },
+        icon:{
+            marginHorizontal:16,
+            boxSizing: 'paddingBox',
+            marginVertical: 8,
+            height: 32,
+            width: 32,
+            resizeMode:'contain',
+        },
+    })
+    const [myShortcuts, setMyShortcuts] = useState([
+        {icon: 'ic-class', title: 'ILMS', url: 'https://google.com'},
+        {icon: 'ic-book', title: '圖書館系統', url: ''},
+        {icon: 'ic-bus', title: '校車時刻表', url: ''},
+        {icon: 'ic-announce', title: '公佈欄', url: ''},
+    ]) 
+    React.useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerShown: false
+        })
+      }, [props.navigation])
     return (
         <View style={stylesheet.container}>
-            <TouchableOpacity style={stylesheet.button} onPress={()=>{props.navigation.navigate('ChatStack', {chatroom: '1'})}}>
-                <Text style={stylesheet.buttonText}>收藏</Text>
-            </TouchableOpacity>
-            { articles && (
-                <FlatList
-                    data={articles}
-                    renderItem={articleListItem}
-                    keyExtractor={(item) => item.id}
-                    removeClippedSubviews={true}
-                />
-            )}
+            <StickedBg image={require('../../assets/home.jpg')}>
+            </StickedBg>
+            
         </View>
     )
 }

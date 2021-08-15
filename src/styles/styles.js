@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { color } from './color'
+import { Color, color } from './color'
 
 export const styles = {
     ...color,
@@ -132,6 +132,24 @@ export const styles = {
         fontWeight: 'bold',
         borderBottomColor: "#0F355C",
         borderBottomWidth: 1,
+    },
+    row:{
+        paddingHorizontal: 16,
+        flexDirection: 'row',
+        width: '100%',
+        alignItems:'flex-start',
+        justifyContent:'flex-start',
+        boxSizing: 'paddingBox',
+    },
+    headerText:{
+        color: Color.grey0,
+        fontWeight: 700,
+        fontSize: 20,
+        lineHeight: 30,
+        textAlign: 'center',
+        alignItems: 'center',
+        flex:1,
+        justifyContent: 'center',
     }
 }
 

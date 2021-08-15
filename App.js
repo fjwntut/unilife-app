@@ -6,6 +6,10 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs' 
 import { LoginScreen, HomeScreen, ArticleScreen, RegistrationScreen, FillInfoScreen, ProfileScreen, ChatroomScreen, MessageScreen } from './src/screens'
 import {decode, encode} from 'base-64'
+import TopicSelectScreen from './src/screens/TopicSelectScreen'
+import SuccessScreen from './src/screens/SuccessScreen'
+import Test from './src/screens/text'
+import SettingScreen from './src/screens/SettingScreen'
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
@@ -62,6 +66,12 @@ export default function App() {
 				<Stack.Screen name="Home" options={{title: "Uni資訊"}}>
 					{props => <HomeScreen {...props} user={user} />}
 				</Stack.Screen>
+				<Stack.Screen name="Success" options={{title: ""}}>
+					{props => <Test {...props} user={user} />}
+				</Stack.Screen>
+				<Stack.Screen name="Topic" options={{title: "選擇興趣"}}>
+					{props => <TopicSelectScreen/>}
+				</Stack.Screen>
 				<Stack.Screen name="Article">
 					{props => <ArticleScreen {...props} user={user} />}
 				</Stack.Screen>
@@ -74,8 +84,14 @@ export default function App() {
 		const Stack = createStackNavigator()
 		return (
 			<Stack.Navigator>
+				<Stack.Screen name="Setting" options={{title: "Uni資訊"}}>
+					{props => <SettingScreen {...props} user={user} />}
+				</Stack.Screen>
 				<Stack.Screen name="Profile">
 				{props => <ProfileScreen {...props} user={user} />}
+				</Stack.Screen>
+				<Stack.Screen name="Topic" options={{title: "選擇興趣"}}>
+					{props => <TopicSelectScreen/>}
 				</Stack.Screen>
 			</Stack.Navigator>
 		)
