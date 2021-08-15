@@ -1,85 +1,146 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, Image, TextInput, TouchableOpacity, View } from 'react-native'
-import styles from './HomeScreen/styles';
+import { FlatList, Keyboard, Text, Image, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { stylesheet, Color } from '../styles'
 import { firebase } from '../firebase/config'
+// import Carousel from 'react-native-ui-lib/carousel';
 
-export default function ChatRoomScreen(props) {
-    console.log(props)
+export default function ChatroomScreen(props) {
     
     const user = props.user.data()
-    console.log(user)
-    const storageRef = firebase.storage().ref();
-    const articlesRef = firebase.firestore().collection('articles')
+    const storageRef = firebase.storage().ref()
+    const chatroomsRef = props.user.ref.collection('chatHistory')
 
-    const [articles, setArticles] = useState([])
-    console.log("Ref", firebase.firestore().doc('articles/9qAFUBpb7n0U1bzylreO'))
+    const [chatrooms, setChatrooms] = useState([])
+    // carousel = React.createRef<typeof Carousel>();
 
     useEffect(() => {
-        articlesRef
-            .where("community", "in", ["all", user.community])
-            .orderBy('publishedAt', 'desc')
-            .onSnapshot(
-                querySnapshot => {
-                    let promises = [];
-                    const newArticles = []
-                    querySnapshot.forEach(doc => {
-                        const article = doc.data()
-                        article.id = doc.id
-                        console.log("article", article)
-                        console.log(storageRef.child('articles/' + article.id + '/images/' + article.coverImage))
-                        promises.push(
-                            storageRef.child('articles/' + article.id + '/images/' + article.coverImage).getDownloadURL()
-                                .then((url) => {
-                                    article.imageUrl = url;
-                                    newArticles.push(article)
-                                })
-                                .catch((e) => {
-                                    console.log('Errors while downloading => ', e)
-                                    newArticles.push(article)
-                                })
-                        );
-                    });
-                    Promise.all(promises).then(() => 
-                        setArticles(newArticles)
-                    ).catch(() => setArticles(newArticles));
-                },
-                error => {
-                    console.log(error)
+        chatroomsRef
+            .orderBy('startedAt')
+            .get()
+            .then(querySnapshot => {
+                    const newChatrooms = [
+                        {
+                            active: true,
+                            userNames: ['Aa', 'Bb', 'Cc'],
+                            id: '0'
+                        },
+                        {
+                            active: true,
+                            userNames: ['Aa', 'Bb', 'Cc'],
+                            id: '0'
+                        },
+                        {
+                            active: true,
+                            userNames: ['Aa', 'Bb', 'Cc'],
+                            id: '0'
+                        },
+                        {
+                            active: true,
+                            userNames: ['Aa', 'Bb', 'Cc'],
+                            id: '0'
+                        },
+                        {
+                            active: true,
+                            userNames: ['Aa', 'Bb', 'Cc'],
+                            id: '0'
+                        },
+                        {
+                            active: true,
+                            userNames: ['Aa', 'Bb', 'Cc'],
+                            id: '0'
+                        },
+                        {
+                            active: true,
+                            userNames: ['Aa', 'Bb', 'Cc'],
+                            id: '0'
+                        },
+                        {
+                            active: true,
+                            userNames: ['Aa', 'Bb', 'Cc'],
+                            id: '0'
+                        },
+                    ]
+                    querySnapshot.forEach(async doc => {
+                        let promises = []
+                        const chatEntry = doc.data()
+                        console.log('chatEntry', chatEntry)
+                        chatEntry.messagesRef = chatEntry.chatroom.collection('messages')
+                        console.log('MessagesRef', chatEntry.messagesRef)
+                        const snapshot = await chatEntry.chatroom.get()
+                        // console.log('chatroom', snapshot.data())
+                        chatEntry.chatroom = snapshot.data()
+                        chatEntry.active = snapshot.data().active
+                        chatEntry.userNames = []
+                        snapshot.data().users.forEach(user => {
+                            promises.push(
+                                user.get()
+                                .then(userSnapshot => chatEntry.userNames.push(userSnapshot.data().info.nickname))
+                                // .finally(() => console.log('userNames', chatEntry.userNames))
+                            )
+                        })     
+                        Promise.all(promises).finally(() => {
+                            newChatrooms.push(chatEntry) 
+                            setChatrooms(newChatrooms)
+                            // console.log('chatrooms', newChatrooms)
+                        })
+                    })
+                    if (querySnapshot.size === 0) {
+                        // // console.log('No chatrooms')
+                        const data = { 
+                            chatroom: firebase.firestore().doc('chatrooms/qD6nKNouqXKnKCLjCPp2'),
+                            unreadCount: 0,
+                            startedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }
+                        props.user.ref.collection('chatHistory').add(data)
+                    }
                 }
             )
+        
     }, [])
-
-    const articleItem = ({item}) => {
+    
+    const chatroomItem = ({item}) => {
+        const cardStyle = StyleSheet.create({
+            fullHeight: {
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            card: {
+                width: '70%',
+                height: 400,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: Color.green,
+            }
+        }) 
         return (
-            <TouchableHighlight onPress={() => props.navigation.navigate('Article', {article: item}) } >
-                <View style={styles.articleContainer}>
-                    <Image style={{width: 50, height: 50}} source={{uri: item.imageUrl}}/>
-                    <Text style={styles.articleText}>
-                        {item.title}
-                    </Text>
-                    <Text style={styles.articleText}>
-                        {item.abstract}
-                    </Text>
+            <TouchableOpacity 
+                style={cardStyle.fullHeight}
+                onPress={() => props.navigation.navigate('Message', {chatroom: item.chatroom, messagesRef: item.messagesRef}) } >
+                <View style={cardStyle.card}>
+                    <Text style={stylesheet.chatroomItemText}>{item.id}</Text>
+                    <Text style={stylesheet.chatroomItemText}>{item.userNames.join(', ')}</Text>
+                    <Text style={stylesheet.chatroomItemText}>{item.active ? 'Active' : 'Inactive'}</Text>
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
     }
 
     return (
-        <View style={styles.container}>
-            { articles && (
-                <View style={styles.listContainer}>
+        <View style={stylesheet.container}>
+            { chatrooms && (
+                <View style={{ flex: 1 }}>
                     <FlatList
-                        data={articles}
-                        renderItem={articleItem}
+                        style={{ flex: 1 }}
+                        data={chatrooms}
+                        renderItem={chatroomItem}
                         keyExtractor={(item) => item.id}
                         removeClippedSubviews={true}
+                        horizontal={true}
+                        inverted={true}
                     />
                 </View>
             )}
-            <TouchableOpacity style={styles.button} onPress={()=>{props.navigation.navigate('ChatStack', {chatroom: '1'})}}>
-                <Text style={styles.buttonText}>聊天</Text>
-            </TouchableOpacity>
         </View>
     )
 }

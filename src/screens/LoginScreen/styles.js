@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-export default StyleSheet.create({
+export const stylesheet = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center'
@@ -10,29 +10,27 @@ export default StyleSheet.create({
     },
     logo: {
         flex: 1,
-        height: 120,
-        width: 90,
+        height: 150,
+        width: 200,
         alignSelf: "center",
-        margin: 30
+        margin: 30,
+        resizeMode:'contain',
+        marginVertical: 48
     },
     input: {
-        height: 48,
-        borderRadius: 5,
+        height: 40,
+        borderRadius: 20,
         overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 30,
-        marginRight: 30,
+        backgroundColor: '#f2f3f3',
+        marginTop: 8,
+        marginBottom: 8,
         paddingLeft: 16
     },
     button: {
-        backgroundColor: '#788eec',
-        marginLeft: 30,
-        marginRight: 30,
-        marginTop: 20,
-        height: 48,
-        borderRadius: 5,
+        backgroundColor: '#00aebb',
+        marginVertical: 8,
+        height: 40,
+        borderRadius: 20,
         alignItems: "center",
         justifyContent: 'center'
     },
@@ -51,8 +49,29 @@ export default StyleSheet.create({
         color: '#2e2e2d'
     },
     footerLink: {
-        color: "#788eec",
+        color: "#0F355C",
         fontWeight: "bold",
-        fontSize: 16
+        fontSize: 16,
+        borderBottomColor: "#0F355C",
+        borderBottomWidth: 2
+    },
+    bg: {
+        flex: 1,
+        justifyContent: "center",
+        resizeMode:'cover',
+        margin: 0
+    },
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        shadowColor:'#0F355C',
+        shadowOpacity: 0.17,
+        shadowOffset: {width: 0, height: 8},
+        shadowRadius: 20,
+        elevation: 16,
+        zIndex:999,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        padding:16
     }
 })
